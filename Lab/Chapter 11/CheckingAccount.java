@@ -184,3 +184,112 @@ class OverDraftException extends Exception {
   }
 }
 
+
+
+
+// CODE AS RUN
+// ===========
+
+/*
+
+[master][~/Documents/Class/CSIT-142/Lab/Chapter 11]$ javac CheckingAccount.java 
+[master][~/Documents/Class/CSIT-142/Lab/Chapter 11]$ java CheckingAccount 
+Enter initial balance: 25
+Enter overdraft protection amount: 100
+
+
+New account created!!
+Balance: 25
+Overdraft Protection: 100
+
+
+
+Would you like to
+=================
+1. Make a deposit
+2. Withdraw Funds
+3. Exit          
+
+
+1
+Enter deposit amount: 50
+
+
+Your new balance is: $75
+
+
+
+Would you like to
+=================
+1. Make a deposit
+2. Withdraw Funds
+3. Exit          
+
+
+2
+Enter the amount you would like to withdraw: 25
+
+
+Your new balance is: $50
+Your new overdraft protection is: $100
+
+
+
+Would you like to
+=================
+1. Make a deposit
+2. Withdraw Funds
+3. Exit          
+
+
+2
+Enter the amount you would like to withdraw: 100
+
+
+Your new balance is: $0
+Your new overdraft protection is: $50
+
+
+
+Would you like to
+=================
+1. Make a deposit
+2. Withdraw Funds
+3. Exit          
+
+
+2
+Enter the amount you would like to withdraw: 100
+
+
+===================================================
+#           !!!!!!!!!ATTENTION!!!!!!!!            #
+#                                                 #
+#  This transaction has been stopped! It would    #
+#  have caused your account to be overdrawn.      #
+#  Please make additional deposits into your,     #
+#  or increase the amount of your overdraft       #
+#  before proceding.                              #
+#                                                 #
+#      DEFICIT CAUSED BY TRANSACTION: $  -50      #
+===================================================
+
+
+
+
+Your new balance is: $0
+Your new overdraft protection is: $50
+
+
+
+Would you like to
+=================
+1. Make a deposit
+2. Withdraw Funds
+3. Exit          
+
+
+3
+[master][~/Documents/Class/CSIT-142/Lab/Chapter 11]$ 
+
+*/
