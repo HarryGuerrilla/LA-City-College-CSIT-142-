@@ -14,3 +14,18 @@
   from the constructor.
 
 */
+
+class SomeClass {
+  public SomeClass() throws Exception{
+    throw new Exception("Exception Thrown in Constructor!");
+  }
+
+  public static void main(String[] args) {
+    try {
+      SomeClass test = new SomeClass();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+  }
+}
