@@ -29,3 +29,16 @@ class SomeClass {
 
   }
 }
+/*
+
+RUN CODE
+========
+
+[master][~/Documents/Class/CSIT-142/Lab/Chapter 11]$ javac SomeClass.java 
+[master][~/Documents/Class/CSIT-142/Lab/Chapter 11]$ java SomeClass
+java.lang.Exception: Exception Thrown in Constructor!
+	at SomeClass.<init>(SomeClass.java:20)
+	at SomeClass.main(SomeClass.java:25)
+[master][~/Documents/Class/CSIT-142/Lab/Chapter 11]$ 
+
+*/
