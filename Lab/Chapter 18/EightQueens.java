@@ -15,27 +15,29 @@ import java.util.ArrayList;
 
 class EightQueens {
 
+  // This method is called recursively to place the queens on the board.  The method
+  // returns true when all eight queens have been placed.
   public boolean placeQueens(int availableQueens, int x, int y, ArrayList<int[]> placedQueens){
 
-    if (spaceAvailable(x,y,placedQueens)) {
+    if (spaceAvailable(x,y,placedQueens)) { // check to see if legally able to place queen
       int[] q = {x,y};
-      placedQueens.add(q);
+      placedQueens.add(q); // add coordinates for queen to array of placed queens
       System.out.printf("Placed queen on: %d,%d\n", q[0], q[1]);
-      availableQueens -= 1;
-      if (x<8) {
+      availableQueens -= 1;// remove queen from available pile of 8
+      if (x<8) { // if queen was not placed in the last available column, move over one column and find an available space.
         if (placeQueens(availableQueens,x+1,1,placedQueens)) return true; 
-      } else if (availableQueens > 0){
+      } else if (availableQueens > 0){ // if the last column was reached and there are still queens remaining, then remove the last queen placed and try again.
         int[] qx = placedQueens.get(placedQueens.size()-1);
         System.out.printf("Removed Queen: %d,%d\n", qx[0], qx[1]);
-        placedQueens.remove(placedQueens.size()-1);
-        availableQueens += 1;
+        placedQueens.remove(placedQueens.size()-1); // remove queen from queens placed
+        availableQueens += 1; // add queen back to available pile
         if (qx[1]<8) { q[1] = q[1]+1; }
         if (placeQueens(availableQueens,q[0],q[1],placedQueens)) return true;        
       }      
-    } else {
-      if (y<8) {
+    } else {  // if cannot place queen in corrdinate move over one space
+      if (y<8) { // as long as there are still spaces left in the colum move up one spacen
         if (placeQueens(availableQueens,x,y+1,placedQueens)) return true; 
-      } else if (availableQueens > 0) {
+      } else if (availableQueens > 0) { // if there are still queens available move over one column and try again
         int[] q = placedQueens.get(placedQueens.size()-1);
         System.out.printf("Removed Queen: %d,%d\n", q[0], q[1]);
         placedQueens.remove(placedQueens.size()-1);
@@ -45,23 +47,24 @@ class EightQueens {
       }
     }
 
-    if (availableQueens == 0) {
-      printBoard(placedQueens);
+    if (availableQueens == 0) { // if all queens have been placed return true
+      printBoard(placedQueens); // pring the solution
       return true; 
     } else {
       return false;
     }
   }
-  
+
+  // Check to see if the queen can be placed in space x,y
   public boolean spaceAvailable(int x, int y, ArrayList<int[]> placedQueens){
     for (int[] i : placedQueens) {
-      if (i[0]==x || i[1]==y) return false;
-      
-      if (diagonalCheck(x,y,i)) return false;
+      if (i[0]==x || i[1]==y) return false; // eliminate spaces that are on the same axis as a queen that has been placed
+      if (diagonalCheck(x,y,i)) return false; // elimintae spaces that are on the diagonal of a queen that has already been placed
     }
     return true;
   }
 
+  // check the diagonal spaces of a queen that has been placed
   public boolean diagonalCheck(int x, int y, int[] i){
     for (int tx=i[0], ty=i[1]; tx<=8 && ty<=8; tx++, ty++) {
       if (tx==x && ty==y) return true;
@@ -78,6 +81,7 @@ class EightQueens {
     return false;
   }
 
+  // print chess board
   public void printBoard(ArrayList<int[]> q){
     System.out.println("\n\n");
     System.out.println("    SOLUTION   ");
@@ -95,6 +99,7 @@ class EightQueens {
     }
   }
 
+  // check is space has queen 
   public boolean isQueen(int[] a, ArrayList<int[]> queens){
     boolean test = false;
     for (int[] q : queens) {
@@ -107,6 +112,7 @@ class EightQueens {
     return test;
   }
 
+  // main function 
   public static void main(String[] args){
     ArrayList<int[]> placedQueens = new ArrayList<int[]>();
     int availableQueens = 8;
