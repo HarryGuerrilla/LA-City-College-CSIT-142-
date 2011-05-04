@@ -1,0 +1,878 @@
+//An empty frame
+
+import javax.swing.*;     // For JFrame
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("First GUI Program");
+      theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      theGUI.setVisible(true);
+   }
+}
+------------------------------
+//A frame with an empty, pink panel
+
+import javax.swing.*;    // For JFrame and JPanel
+import java.awt.*;       // For Color and Container
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("Second GUI Program");
+      theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      JPanel panel = new JPanel();
+      panel.setBackground(Color.pink);
+      Container pane = theGUI.getContentPane();
+      pane.add(panel);
+      theGUI.setVisible(true);
+   }
+}
+------------------------------------
+//A frame with 5 colored panels
+
+import javax.swing.*;    // For JFrame and JPanel
+import java.awt.*;       // For Color and Container
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("Third GUI Program");
+      theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      JPanel northPanel = new JPanel(); 
+      northPanel.setBackground(Color.red);
+      JPanel eastPanel = new JPanel(); 
+      eastPanel.setBackground(Color.blue);
+      JPanel southPanel = new JPanel(); 
+      southPanel.setBackground(Color.red);
+      JPanel westPanel = new JPanel(); 
+      westPanel.setBackground(Color.blue);
+      JPanel centerPanel = new JPanel(); 
+      centerPanel.setBackground(Color.white);
+      Container pane = theGUI.getContentPane();
+      pane.add(northPanel, BorderLayout.NORTH);
+      pane.add(eastPanel, BorderLayout.EAST);
+      pane.add(southPanel, BorderLayout.SOUTH);
+      pane.add(westPanel, BorderLayout.WEST);
+      pane.add(centerPanel, BorderLayout.CENTER);
+      theGUI.setVisible(true);
+   }
+}
+------------------------------------
+// An empty colored panel
+
+import javax.swing.*;
+import java.awt.*;
+
+class ColorPanel extends JPanel{
+
+   public ColorPanel(Color backColor){
+      setBackground(backColor);
+   }
+}
+
+/*
+//A colored panel containing a red text
+// message in a blue rectangle
+
+import javax.swing.*;
+import java.awt.*;
+
+class ColorPanel extends JPanel{
+ 
+   public ColorPanel(Color backColor){
+      setBackground(backColor);
+   }
+ 
+   public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      g.setColor(Color.blue);
+      g.drawRect(10, 5, 120, 20);
+      g.setColor(Color.red);
+      g.drawString("Hello world!", 20, 20);
+ //     g.drawLine(5,5, 20,20);
+ 
+ //    g.setColor(Color.lightGray);
+ //    g.fillRect(30, 30, 50, 50);
+      g.drawOval(80,80, 20,50);
+      g.setColor(Color.pink);
+      g.fillOval(150,150, 20,50);     
+   } 
+}
+
+*/
+
+
+// Main application window
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Program");
+      theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      ColorPanel panel = new ColorPanel(Color.red);
+      Container pane = theGUI.getContentPane();
+      pane.add(panel);
+      theGUI.setVisible(true);
+   }
+}
+
+//Tasks T1 to T4.
+----------------------------------------------------
+
+// A color panel whose background color is provided
+// by the client
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Random;
+
+
+class ColorPanel extends JPanel{
+
+   public ColorPanel(Color backColor){
+      setBackground(backColor);
+   }
+}
+
+//Display random colors in a grid
+// whose dimensions are input by the user
+
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Example");
+      String inputStr = JOptionPane.showInputDialog("Number of rows", "5");
+      if (inputStr == null) return;
+      int rows = Integer.parseInt(inputStr);
+      inputStr = JOptionPane.showInputDialog("Number of columns", "5");
+      if (inputStr == null) return;
+      int cols = Integer.parseInt(inputStr);
+      theGUI.setSize(cols * 50, rows * 50);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      Container pane = theGUI.getContentPane();
+      pane.setLayout(new GridLayout(rows, cols));
+      Random gen = new Random();
+      for (int i = 1; i < rows * cols; i++){
+         int red = gen.nextInt(256);
+         int green = gen.nextInt(256);
+         int blue = gen.nextInt(256);
+         Color backColor = new Color(red, green, blue);
+         ColorPanel panel = new ColorPanel(backColor);
+         pane.add(panel);
+      }
+      theGUI.setVisible(true);
+   }
+}
+//Task T5
+-------------------------------------------
+// Represents a circle
+
+import java.awt.*;
+import javax.swing.*;
+
+class Circle{
+
+   private int centerX, centerY, radius;
+   private Color color;
+
+   public Circle(int x, int y, int r, Color c){
+      centerX = x;
+      centerY = y;
+      radius = r;
+      color = c;
+   }
+
+   public void draw(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      g.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public void fill(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public boolean containsPoint(int x, int y){
+      int xSquared = (x - centerX) * (x - centerX);
+      int ySquared = (y - centerY) * (y - centerY);
+      int radiusSquared = radius * radius;
+      return xSquared + ySquared - radiusSquared <= 0;
+   }
+
+   public void move(int xAmount, int yAmount){
+      centerX = centerX + xAmount;
+      centerY = centerY + yAmount;
+   }
+}
+
+//Displays a circle and a filed circle
+
+class ColorPanel extends JPanel{
+
+   private Circle c1, c2;
+ 
+   public ColorPanel(Color backColor){
+      setBackground(backColor);
+      c1 = new Circle(200, 100, 25, Color.red);
+      c2 = new Circle(100, 100, 50, Color.blue);   
+   }
+ 
+   public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      c1.fill(g);
+      c2.draw(g);      
+   }
+}
+
+// Circle Examples
+
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Program");
+      theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      ColorPanel panel = new ColorPanel(Color.white);
+      Container pane = theGUI.getContentPane();
+      pane.add(panel);
+      theGUI.setVisible(true);
+   }
+}
+---------------------------
+// Tracks mouse presses by displaying
+// the current mouse position
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class ColorPanel extends JPanel{
+
+   int x, y;
+ 
+   public ColorPanel(Color backColor){
+      setBackground(backColor);
+      x = 100;
+      y = 100;
+      addMouseListener(new PanelListener());
+   }
+ 
+   public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      g.drawString("(" + x + ", " + y + ")", x, y);      
+   }
+
+   private class PanelListener extends MouseAdapter{
+
+      public void mousePressed(MouseEvent e){
+         x = e.getX();
+         y = e.getY(); 
+         repaint();
+      }
+   }
+}
+
+// Tracks position of the mouse in a panel
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Program");
+      theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      ColorPanel panel = new ColorPanel(Color.white);
+      Container pane = theGUI.getContentPane();
+      pane.add(panel);
+      theGUI.setVisible(true);
+   }
+}
+---------------------------
+// Represents a circle
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+
+class Circle{
+
+   private int centerX, centerY, radius;
+   private Color color;
+
+   public Circle(int x, int y, int r, Color c){
+      centerX = x;
+      centerY = y;
+      radius = r;
+      color = c;
+   }
+
+   public void draw(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      g.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public void fill(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public boolean containsPoint(int x, int y){
+      int xSquared = (x - centerX) * (x - centerX);
+      int ySquared = (y - centerY) * (y - centerY);
+      int radiusSquared = radius * radius;
+      return xSquared + ySquared - radiusSquared <= 0;
+   }
+
+   public void move(int xAmount, int yAmount){
+      centerX = centerX + xAmount;
+      centerY = centerY + yAmount;
+   }
+}
+
+// Displays a circle and a filled circle
+// Allows the user to drag a circle to another position
+
+
+class ColorPanel extends JPanel{
+
+   private Circle c1, c2;
+   private Circle selectedCircle;  // Used to track selected shape
+   private int x, y;               // Used to track mouse coordinates  
+ 
+   public ColorPanel(Color backColor){
+      setBackground(backColor);
+      c1 = new Circle(200, 100, 25, Color.red);
+      c2 = new Circle(100, 100, 50, Color.blue);
+      selectedCircle = null;   
+      addMouseListener(new PanelListener());
+      addMouseMotionListener(new PanelMotionListener());
+   }
+ 
+   public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      c1.fill(g);
+      c2.draw(g);      
+   }
+
+   private class PanelListener extends MouseAdapter{
+
+      public void mousePressed(MouseEvent e){
+         x = e.getX();
+         y = e.getY();
+         if (c1.containsPoint(x, y))
+            selectedCircle = c1;
+         else if (c2.containsPoint(x, y))
+            selectedCircle = c2; 
+      }
+
+      public void mouseReleased(MouseEvent e){
+         x = e.getX();
+         y = e.getY();
+         selectedCircle = null;
+      }        
+   }
+
+   private class PanelMotionListener extends MouseMotionAdapter{
+
+      public void mouseDragged(MouseEvent e){
+         int newX = e.getX();
+         int newY = e.getY();
+         int dx = newX - x;
+         int dy = newY - y;
+         if (selectedCircle != null)
+            selectedCircle.move(dx, dy);
+         x = newX;
+         y = newY; 
+         repaint();
+      }
+   } 
+}
+
+// A frame with an empty panel
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Program");
+      theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      ColorPanel panel = new ColorPanel(Color.white);
+      Container pane = theGUI.getContentPane();
+      pane.setLayout(new GridLayout(1, 1));
+      pane.add(panel);
+      theGUI.setVisible(true);
+   }
+}
+
+//Task T5
+-------------------------------------------
+// Represents a circle
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class Circle{
+
+   private int centerX, centerY, radius;
+   private Color color;
+   private int direction, velocity;
+   private boolean filled;
+
+   public Circle(int x, int y, int r, Color c){
+      centerX = x;
+      centerY = y;
+      radius = r;
+      color = c;
+      direction = 0;
+      velocity = 0;
+      filled = false;
+   }
+
+   public void draw(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      if (filled)
+         g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      else
+         g.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public void fill(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public boolean containsPoint(int x, int y){
+      int xSquared = (x - centerX) * (x - centerX);
+      int ySquared = (y - centerY) * (y - centerY);
+      int radiusSquared = radius * radius;
+      return xSquared + ySquared - radiusSquared <= 0;
+   }
+
+   public void move(int xAmount, int yAmount){
+      centerX = centerX + xAmount;
+      centerY = centerY + yAmount;
+   }
+
+   public int getRadius(){
+      return radius;
+   }
+
+   public int getX(){
+      return centerX;
+   }
+
+   public int getY(){
+      return centerY;
+   }
+
+   public void setVelocity(int v){
+      velocity = v;
+   }  
+
+   public void setDirection(int d){
+      direction = d % 360;
+   }
+
+   public void turn(int degrees){
+      direction = (direction + degrees) % 360;
+   }
+
+   // Moves the circle in the current direction using its
+   // current velocity
+   public void move(){
+      move((int)(velocity * Math.cos(Math.toRadians(direction))),
+           (int)(velocity * Math.sin(Math.toRadians(direction))));
+   }
+
+   public void setFilled(boolean b){
+      filled = b;
+   }
+
+}
+
+// Moves the circle 50 pixels and 
+// turns it 45 degrees in response to a mouse press
+
+class ColorPanel extends JPanel{
+
+   private Circle circle;
+ 
+   public ColorPanel(Color backColor, int width, int height){
+      setBackground(backColor);
+      setPreferredSize(new Dimension(width, height));
+      // Circle centered in the panel with radius 25
+      circle = new Circle(width / 2, height / 2, 25, Color.red);
+      circle.setFilled(true);
+      // Move 50 pixels per mouse press
+      circle.setVelocity(50);
+      addMouseListener(new MoveListener());
+   }
+ 
+   public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      circle.fill(g);      
+   }
+
+   private class MoveListener extends MouseAdapter{
+
+      public void mousePressed(MouseEvent e){
+         circle.move();
+         circle.turn(45);   // Turn 45 degrees
+         repaint();
+      }
+   }
+}
+
+// A frame with an empty panel
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Program");
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      ColorPanel panel = new ColorPanel(Color.white, 500, 500);
+      Container pane = theGUI.getContentPane();
+      pane.add(panel);
+      theGUI.pack();
+      theGUI.setVisible(true);
+   }
+}
+-----------------------------
+// Represents a circle
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+class Circle{
+
+   private int centerX, centerY, radius;
+   private Color color;
+   private int direction, velocity;
+   private boolean filled;
+
+   public Circle(int x, int y, int r, Color c){
+      centerX = x;
+      centerY = y;
+      radius = r;
+      color = c;
+      direction = 0;
+      velocity = 0;
+      filled = false;
+   }
+
+   public void draw(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      if (filled)
+         g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      else
+         g.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public void fill(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public boolean containsPoint(int x, int y){
+      int xSquared = (x - centerX) * (x - centerX);
+      int ySquared = (y - centerY) * (y - centerY);
+      int radiusSquared = radius * radius;
+      return xSquared + ySquared - radiusSquared <= 0;
+   }
+
+   public void move(int xAmount, int yAmount){
+      centerX = centerX + xAmount;
+      centerY = centerY + yAmount;
+   }
+
+   public int getRadius(){
+      return radius;
+   }
+
+   public int getX(){
+      return centerX;
+   }
+
+   public int getY(){
+      return centerY;
+   }
+
+   public void setVelocity(int v){
+      velocity = v;
+   }  
+
+   public void setDirection(int d){
+      direction = d % 360;
+   }
+
+   public void turn(int degrees){
+      direction = (direction + degrees) % 360;
+   }
+
+   // Moves the circle in the current direction using its
+   // current velocity
+   public void move(){
+      move((int)(velocity * Math.cos(Math.toRadians(direction))),
+           (int)(velocity * Math.sin(Math.toRadians(direction))));
+   }
+
+   public void setFilled(boolean b){
+      filled = b;
+   }
+
+}
+
+ 
+
+// Moves the circle 50 pixels and 
+// turns it 45 degrees in response to timer events
+
+
+class ColorPanel extends JPanel{
+
+   private Circle circle;
+   private javax.swing.Timer timer;
+ 
+   public ColorPanel(Color backColor, int width, int height){
+      setBackground(backColor);
+      setPreferredSize(new Dimension(width, height));
+      // Circle centered in the panel with radius 25
+      circle = new Circle(width / 2, height / 2, 25, Color.red);
+      circle.setFilled(true);
+      // Move 50 pixels per timer event
+      circle.setVelocity(50);
+      // Fire timer events every 1/8 second
+      timer = new javax.swing.Timer(125, new MoveListener());
+      timer.start();
+   }
+ 
+   public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      circle.fill(g);      
+   }
+
+   private class MoveListener implements ActionListener{
+
+      public void actionPerformed(ActionEvent e){
+         circle.move();
+         circle.turn(45);   // Turn 45 degrees
+         repaint();
+      }
+   }
+}
+
+// A frame with an empty panel
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Program");
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      ColorPanel panel = new ColorPanel(Color.white, 500, 500);
+      Container pane = theGUI.getContentPane();
+      pane.add(panel);
+      theGUI.pack();
+      theGUI.setVisible(true);
+   }
+}
+//Tasks T6.
+---------------------------------
+// Represents a circle
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+ class Circle{
+
+   private int centerX, centerY, radius;
+   private Color color;
+   private int direction, velocity;
+   private boolean filled;
+
+   public Circle(int x, int y, int r, Color c){
+      centerX = x;
+      centerY = y;
+      radius = r;
+      color = c;
+      direction = 0;
+      velocity = 0;
+      filled = false;
+   }
+
+   public void draw(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      if (filled)
+         g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      else
+         g.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public void fill(Graphics g){
+      Color oldColor = g.getColor();
+      g.setColor(color);
+      // Translates circle's center to rectangle's origin for drawing.
+      g.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+      g.setColor(oldColor);
+   }
+
+   public boolean containsPoint(int x, int y){
+      int xSquared = (x - centerX) * (x - centerX);
+      int ySquared = (y - centerY) * (y - centerY);
+      int radiusSquared = radius * radius;
+      return xSquared + ySquared - radiusSquared <= 0;
+   }
+
+   public void move(int xAmount, int yAmount){
+      centerX = centerX + xAmount;
+      centerY = centerY + yAmount;
+   }
+
+   public int getRadius(){
+      return radius;
+   }
+
+   public int getX(){
+      return centerX;
+   }
+
+   public int getY(){
+      return centerY;
+   }
+
+   public void setVelocity(int v){
+      velocity = v;
+   }  
+
+   public void setDirection(int d){
+      direction = d % 360;
+   }
+
+   public void turn(int degrees){
+      direction = (direction + degrees) % 360;
+   }
+
+   // Moves the circle in the current direction using its
+   // current velocity
+   public void move(){
+      move((int)(velocity * Math.cos(Math.toRadians(direction))),
+           (int)(velocity * Math.sin(Math.toRadians(direction))));
+   }
+
+   public void setFilled(boolean b){
+      filled = b;
+   }
+
+}
+
+// A filled circle moves back and forth
+// across the panel, appearing to bounce off its edges
+
+
+class ColorPanel extends JPanel{
+
+   private Circle circle;
+   private javax.swing.Timer timer;
+ 
+   public ColorPanel(Color backColor, int width, int height){
+      setBackground(backColor);
+      setPreferredSize(new Dimension(width, height));
+      // Circle with center point (25, 100) and radius 25
+      circle = new Circle(25, height / 2, 25, Color.red);
+      circle.setFilled(true);
+      // Aim due west to hit left boundary first
+      circle.setDirection(180);
+      // Move 5 pixels per unit of time
+      circle.setVelocity(5);
+      // Move every 5 milliseconds 
+      timer = new javax.swing.Timer(5, new MoveListener());
+      timer.start();
+   }
+ 
+   public void paintComponent(Graphics g){
+      super.paintComponent(g);
+      circle.fill(g);      
+   }
+
+   private class MoveListener implements ActionListener{
+
+      public void actionPerformed(ActionEvent e){
+         int x = circle.getX();
+         int radius = circle.getRadius();
+         int width = getWidth();
+         // Check for boundaries and reverse direction
+         // if necessary
+         if (x - radius <= 0 || x + radius >= width)
+            circle.turn(180);
+         circle.move();
+         repaint();
+      }
+   }
+}
+
+// A frame with an empty panel
+
+public class GUIWindow{
+
+   public static void main(String[] args){
+      JFrame theGUI = new JFrame();
+      theGUI.setTitle("GUI Program");
+      //theGUI.setSize(300, 200);
+      theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      ColorPanel panel = new ColorPanel(Color.white, 300, 200);
+      Container pane = theGUI.getContentPane();
+      pane.add(panel);
+      theGUI.pack();
+      theGUI.setVisible(true);
+   }
+}
+---------------------------------------
+//Tasks T7.
+
+ 
