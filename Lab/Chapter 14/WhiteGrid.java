@@ -21,11 +21,6 @@ class WhiteGrid{
 
 
 class RandColorPanel extends JPanel{
-  // Random gen = new Random();
-  // int r = gen.nextInt(256);
-  // int g = gen.nextInt(256);
-  // int b = gen.nextInt(256);
-
   public RandColorPanel(){
     setBackground(new Color(255,255,255));
     addMouseListener(new PanelListener(this));
