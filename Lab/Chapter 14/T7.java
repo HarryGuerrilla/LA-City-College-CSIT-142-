@@ -6,14 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
- class Circle{
+ class Circle_t7{
 
    private int centerX, centerY, radius;
    private Color color;
    private int direction, velocity;
    private boolean filled;
 
-   public Circle(int x, int y, int r, Color c){
+   public Circle_t7(int x, int y, int r, Color c){
       centerX = x;
       centerY = y;
       radius = r;
@@ -95,17 +95,17 @@ import java.awt.event.*;
 // across the panel, appearing to bounce off its edges
 
 
-class ColorPanel extends JPanel{
+class ColorPanel_t7 extends JPanel{
 
-   private Circle circle1, circle2;
+   private Circle_t7 circle1, circle2;
    private javax.swing.Timer timer;
  
-   public ColorPanel(Color backColor, int width, int height){
+   public ColorPanel_t7(Color backColor, int width, int height){
       setBackground(backColor);
       setPreferredSize(new Dimension(width, height));
-      circle1 = new Circle(25, height / 2, 25, Color.red);
+      circle1 = new Circle_t7(25, height / 2, 25, Color.red);
       circle1.setFilled(true);
-      circle2 = new Circle(width - 25, height / 2, 25, Color.green);
+      circle2 = new Circle_t7(width - 25, height / 2, 25, Color.green);
       circle2.setFilled(true);
       circle1.setDirection(180);
       circle2.setDirection(0);
@@ -165,7 +165,7 @@ public class T7{
       JFrame theGUI = new JFrame();
       theGUI.setTitle("GUI Program");
       theGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      ColorPanel panel = new ColorPanel(Color.white, 300, 200);
+      ColorPanel_t7 panel = new ColorPanel_t7(Color.white, 300, 200);
       Container pane = theGUI.getContentPane();
       pane.add(panel);
       theGUI.pack();
