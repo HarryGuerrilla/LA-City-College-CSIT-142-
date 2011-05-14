@@ -66,8 +66,6 @@ public class CheckingAccountUnSafe {
     }
   } // end checkOverdraft()
 
-
-
   // Main Method
   // ===========
 
