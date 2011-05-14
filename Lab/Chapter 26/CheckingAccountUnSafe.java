@@ -14,7 +14,6 @@
 
  */
 
-//import java.util.Scanner;
 import java.util.Random;
 
 public class CheckingAccountUnSafe {
@@ -30,7 +29,6 @@ public class CheckingAccountUnSafe {
   } // end getBalance()
 
   public void setBalance(int new_balance){
-    // balance = (new_balance > 0) ? new_balance : 0;
     balance = new_balance;
   }
 
@@ -47,36 +45,11 @@ public class CheckingAccountUnSafe {
   // =============
 
   public void withdraw( int withdrawAmount ){
-    
     if (withdrawAmount < 0) { // ensure that withdrawal is not negative
       System.out.println("You cannot withdraw a negative amount");
       withdrawAmount = 0;
     }
-
-    // try {
-      // if ( balance < withdrawAmount ) {
-      //   checkOverdraft(withdrawAmount);
-      //   setOverDraftAmount(overDraftAmount - (withdrawAmount - balance));
-      //   setBalance(0);
-      // } else {
-        setBalance(getBalance() - withdrawAmount);
-      // }
-    // }
-    // catch (OverDraftException e) {
-    //   System.err.print("\n\n");      
-    //   System.err.println("===================================================");
-    //   System.err.println("#           !!!!!!!!!ATTENTION!!!!!!!!            #");
-    //   System.err.println("#                                                 #");
-    //   System.err.println("#  This transaction has been stopped! It would    #");
-    //   System.err.println("#  have caused your account to be overdrawn.      #");
-    //   System.err.println("#  Please make additional deposits into your,     #");
-    //   System.err.println("#  or increase the amount of your overdraft       #");
-    //   System.err.println("#  before proceding.                              #");
-    //   System.err.println("#                                                 #");
-    //   System.err.printf( "#      DEFICIT CAUSED BY TRANSACTION: $%1$5d      #\n", e.getDeficit());
-    //   System.err.println("===================================================");
-    //   System.err.print("\n\n");
-    // }
+    balance -= withdrawAmount;
   } // end withdraw()
 
   public void deposit( int depositAmount ){
