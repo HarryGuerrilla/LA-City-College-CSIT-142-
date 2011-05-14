@@ -56,16 +56,6 @@ public class CheckingAccountUnSafe {
     balance += depositAmount;
   } // end deposit()
 
-  private void checkOverdraft(int withdrawAmount)
-    throws OverDraftException
-  {
-    if ( balance + overDraftAmount < withdrawAmount) {
-      OverDraftException e = new OverDraftException();
-      e.setDeficit(balance + overDraftAmount - withdrawAmount);
-      throw e;
-    }
-  } // end checkOverdraft()
-
   // Main Method
   // ===========
 
