@@ -7,10 +7,7 @@
   LAB HOMEWORK
   ===========================================================================
 
-  (a) Write a BankAccount class that has withdraw and deposit methods. 
-  Implement the class as 'not thread safe'. Exhibit the unsafe behavior, by 
-  running two threads making random withdrawals and deposits. Upload the java 
-  source, class and sample output.
+  (b) Make the class thread safe. Upload the java source, class and sample output.
 
  */
 
