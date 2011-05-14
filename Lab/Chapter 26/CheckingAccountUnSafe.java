@@ -92,33 +92,6 @@ public class CheckingAccountUnSafe {
 
 }
 
-
-// Class OverDraftException is an exception raised when the Overdraft Amount 
-// is not enough to cover the withdrawal amount.  The Class also stores an
-// instance variable of the deficit amount.
-class OverDraftException extends Exception {
-  private int deficit = 0;
-
-  public OverDraftException(String msg, Throwable e){
-    super(msg,e);
-  }
-
-  public OverDraftException(String msg){
-    super(msg);
-  }
-
-  public OverDraftException(){
-    super();
-  }
-
-  public int getDeficit(){
-    return deficit;
-  }
-  public void setDeficit(int adjustment){
-    deficit += adjustment;
-  }
-}
-
 class Withdraw extends CheckingAccountUnSafe implements Runnable {
   CheckingAccountUnSafe account;
   Random generator = new Random();
@@ -166,3 +139,50 @@ class Deposit extends CheckingAccountUnSafe implements Runnable {
 
 // CODE AS RUN
 // ===========
+/*
+New account created!!
+Balance: 0
+Overdraft Protection: 0
+
+Depositing $24
+Balance is: $24
+Withdrawing $91
+Balance is $: -67
+Withdrawing $31
+Balance is $: -98
+Depositing $71
+Balance is: $-27
+Depositing $18
+Balance is: $-9
+Depositing $61
+Balance is: $52
+Withdrawing $84
+Balance is $: -32
+Depositing $31
+Balance is: $-1
+Withdrawing $38
+Balance is $: -39
+Depositing $35
+Balance is: $-4
+Depositing $64
+Balance is: $60
+Withdrawing $0
+Balance is $: 60
+Withdrawing $16
+Balance is $: 44
+Withdrawing $16
+Balance is $: 28
+Depositing $24
+Balance is: $52
+Depositing $50
+Balance is: $102
+Withdrawing $14
+Balance is $: 88
+Withdrawing $66
+Balance is $: 22
+Depositing $14
+Balance is: $36
+Withdrawing $30
+Balance is $: 6
+
+ */
