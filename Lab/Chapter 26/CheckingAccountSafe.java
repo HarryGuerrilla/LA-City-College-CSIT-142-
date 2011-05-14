@@ -20,7 +20,6 @@ public class CheckingAccountSafe {
   private int balance = 0;
   private int overDraftAmount = 0;
 
-
   // Getters and Setters
   // ===================
 
@@ -44,7 +43,12 @@ public class CheckingAccountSafe {
   // Other Methods
   // =============
 
-  public void withdraw( int withdrawAmount ){
+  public synchronized void withdraw( int withdrawAmount ) throws InterruptedException{
+    while (getBalance()<withdrawAmount) {
+      System.out.println("Waiting for Funds to be available");
+      wait();
+    }
+
     if (withdrawAmount < 0) { // ensure that withdrawal is not negative
       System.out.println("You cannot withdraw a negative amount");
       withdrawAmount = 0;
@@ -52,8 +56,9 @@ public class CheckingAccountSafe {
     balance -= withdrawAmount;
   } // end withdraw()
 
-  public void deposit( int depositAmount ){
+  public synchronized void deposit( int depositAmount ) throws InterruptedException{
     balance += depositAmount;
+    notifyAll();
   } // end deposit()
 
   // Main Method
@@ -132,45 +137,48 @@ New account created!!
 Balance: 0
 Overdraft Protection: 0
 
-Depositing $24
-Balance is: $24
-Withdrawing $91
-Balance is $: -67
-Withdrawing $31
-Balance is $: -98
-Depositing $71
-Balance is: $-27
-Depositing $18
-Balance is: $-9
-Depositing $61
-Balance is: $52
-Withdrawing $84
-Balance is $: -32
-Depositing $31
-Balance is: $-1
-Withdrawing $38
-Balance is $: -39
-Depositing $35
-Balance is: $-4
-Depositing $64
-Balance is: $60
-Withdrawing $0
-Balance is $: 60
-Withdrawing $16
-Balance is $: 44
-Withdrawing $16
-Balance is $: 28
-Depositing $24
-Balance is: $52
-Depositing $50
-Balance is: $102
-Withdrawing $14
-Balance is $: 88
-Withdrawing $66
+Depositing $55
+Balance is: $55
+Depositing $29
+Balance is: $84
+Depositing $32
+Balance is: $116
+Withdrawing $94
 Balance is $: 22
-Depositing $14
-Balance is: $36
+Withdrawing $81
+Waiting for Funds to be available
+Depositing $90
+Balance is: $112
+Balance is $: 31
+Withdrawing $47
+Waiting for Funds to be available
+Depositing $99
+Balance is: $130
+Balance is $: 83
+Withdrawing $11
+Balance is $: 72
+Withdrawing $77
+Waiting for Funds to be available
+Depositing $98
+Balance is: $170
+Balance is $: 93
+Withdrawing $11
+Balance is $: 82
+Depositing $23
+Balance is: $105
+Depositing $7
+Balance is: $112
+Withdrawing $73
+Balance is $: 39
+Depositing $92
+Balance is: $131
+Withdrawing $23
+Balance is $: 108
+Withdrawing $67
+Balance is $: 41
+Depositing $50
+Balance is: $91
 Withdrawing $30
-Balance is $: 6
+Balance is $: 61
 
  */
