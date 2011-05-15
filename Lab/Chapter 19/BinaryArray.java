@@ -1,6 +1,4 @@
-// Fig. 19.4: BinaryArray.java
-// Class that contains an array of random integers and a method 
-// that uses binary search to find an integer.
+import java.util.Scanner;
 import java.util.Random;
 import java.util.Arrays;
 
@@ -22,37 +20,30 @@ public class BinaryArray
    } // end BinaryArray constructor
 
    // perform a binary search on the data
-   public int binarySearch( int searchElement )
+  public int binarySearch( int searchKey, int startingIndex, int endingIndex )
    {
-      int low = 0; // low end of the search area
-      int high = data.length - 1; // high end of the search area
-      int middle = ( low + high + 1 ) / 2; // middle element
-      int location = -1; // return value; -1 if not found
+     int middle = (endingIndex - startingIndex + 1)/2 + startingIndex;
 
-      do // loop to search for element
-      {
-         // print remaining elements of array
-         System.out.print( remainingElements( low, high ) );
+     // print remaining elements of array
+     System.out.print( remainingElements( startingIndex, endingIndex ) );
 
-         // output spaces for alignment
-         for ( int i = 0; i < middle; i++ )
-            System.out.print( "   " );
-         System.out.println( " * " ); // indicate current middle
+     // output spaces for alignment
+     for ( int i = 0; i < middle; i++ )
+       System.out.print( "   " );
+     System.out.println( " * " ); // indicate current middle
 
-         // if the element is found at the middle
-         if ( searchElement == data[ middle ] )
-            location = middle; // location is the current middle
-
-         // middle element is too high
-         else if ( searchElement < data[ middle ] )
-            high = middle - 1; // eliminate the higher half
-         else // middle element is too low
-            low = middle + 1; // eliminate the lower half
-
-         middle = ( low + high + 1 ) / 2; // recalculate the middle
-      } while ( ( low <= high ) && ( location == -1 ) );
-
-      return location; // return location of search key
+     if (data[middle]==searchKey) {
+       return middle;
+     } else if (endingIndex-startingIndex==0) {
+       return -1;
+     } else if (searchKey>data[middle]) {
+       return binarySearch(searchKey, middle + 1, endingIndex);
+     } else if (searchKey<data[middle]) {
+       return binarySearch(searchKey, startingIndex, middle - 1);
+     }
+     
+     return -1;
+     
    } // end method binarySearch
 
    // method to output certain values in array
@@ -77,20 +68,74 @@ public class BinaryArray
    {
       return remainingElements( 0, data.length - 1 );
    } // end method toString   
+
+   public static void main( String[] args )
+   {
+      // create Scanner object to input data
+      Scanner input = new Scanner( System.in );
+      
+      int searchInt; // search key
+      int position; // location of search key in array
+   
+      // create array and output it
+      BinaryArray searchArray = new BinaryArray( 15 );
+      System.out.println( searchArray );
+
+      // get input from user
+      System.out.print( 
+         "Please enter an integer value (-1 to quit): " );
+      searchInt = input.nextInt(); // read an int from user
+      System.out.println();
+
+      // repeatedly input an integer; -1 terminates the program
+      while ( searchInt != -1 )
+      {
+         // use binary search to try to find integer
+        position = searchArray.binarySearch( searchInt, 0, 14 );
+
+         // return value of -1 indicates integer was not found
+         if ( position == -1 )
+            System.out.println( "The integer " + searchInt + 
+               " was not found.\n" );
+         else
+            System.out.println( "The integer " + searchInt + 
+               " was found in position " + position + ".\n" );
+
+         // get input from user
+         System.out.print( 
+            "Please enter an integer value (-1 to quit): " );
+         searchInt = input.nextInt(); // read an int from user
+         System.out.println();
+      } // end while
+   } // end main
 } // end class BinaryArray
+ 
+/*
+11 13 15 16 17 26 35 57 59 61 61 67 74 89 91 
 
+Please enter an integer value (-1 to quit): 27
 
-/**************************************************************************
- * (C) Copyright 1992-2010 by Deitel & Associates, Inc. and               *
- * Pearson Education, Inc. All Rights Reserved.                           *
- *                                                                        *
- * DISCLAIMER: The authors and publisher of this book have used their     *
- * best efforts in preparing the book. These efforts include the          *
- * development, research, and testing of the theories and programs        *
- * to determine their effectiveness. The authors and publisher make       *
- * no warranty of any kind, expressed or implied, with regard to these    *
- * programs or to the documentation contained in these books. The authors *
- * and publisher shall not be liable in any event for incidental or       *
- * consequential damages in connection with, or arising out of, the       *
- * furnishing, performance, or use of these programs.                     *
- *************************************************************************/
+11 13 15 16 17 26 35 57 59 61 61 67 74 89 91 
+                      * 
+11 13 15 16 17 26 35 
+          * 
+            17 26 35 
+                * 
+                  35 
+                   * 
+The integer 27 was not found.
+
+Please enter an integer value (-1 to quit): 59
+
+11 13 15 16 17 26 35 57 59 61 61 67 74 89 91 
+                      * 
+                        59 61 61 67 74 89 91 
+                                  * 
+                        59 61 61 
+                            * 
+                        59 
+                         * 
+The integer 59 was found in position 8.
+
+Please enter an integer value (-1 to quit): -1
+*/

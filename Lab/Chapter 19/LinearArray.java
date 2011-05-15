@@ -74,3 +74,17 @@ public class LinearArray
    } // end main
 } // end class LinearArray
 
+/*
+[51, 73, 98, 60, 20, 57, 65, 95, 21, 35]
+
+Please enter an integer value (-1 to quit): 61
+The integer 61 was not found.
+
+Please enter an integer value (-1 to quit): 35
+The integer 35 was found in position 9.
+
+Please enter an integer value (-1 to quit): 60
+The integer 60 was found in position 3.
+
+Please enter an integer value (-1 to quit): -1
+*/
