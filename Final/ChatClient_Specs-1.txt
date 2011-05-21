@@ -1,0 +1,86 @@
+This is the 'project' part of your final for CS142. The project will tie in concepts from the area of MultiThreading, GUI, Networking and FILE I/O. The project has two parts: 
+(a) Chat Client. You will provide code for it.
+(b) Chat Server. You will have a simple chat server to connect to.
+
+Chat Client:
+(a) Build the GUI. Look at the chatclient.gui as to what needs to be constructed.There are four components to this GUI. The main component is a TextArea. The bottom area is a TextField. There are two Button components on the right.
+(i) Create a ChatClient class with four private attributes; one for each component. In the constructor initialize each of these components. The text area should be 10 rows and 50 columns wide, the text field 50 columns wide. The Send button should display 'SEND' and likewise for 'QUIT' button.
+
+(ii) Create a launchFrame method that constructs the layout of the components. Use nested Panels and layout managers.
+
+(iii) Create the main method, which instatiates a new ChatClient object and casts launchFrame method.
+
+(b) Add Networking and Thread code.
+(i) In the launchFrame method, make the connection to the server.
+
+(ii) Get streams (input & output) from the socket connection so that you can send your messages to the server and receive other messages from the server.
+
+(iii) Ensure that you have a RemoteReader - a runnable object- that can be run by a thread and continously listen for input on the input stream.
+
+(iv) Modify the actionPerformed method so that when the user clicks the 'SEND' button, you send the text of the message to the server, rather putting it into the text area.
+
+(v) Modify the action listener on the "input" text field to do the same as above.
+
+(vi) Have the RemoteReader object put the incoming messages into the text area.
+
+Hints - 
+(i) How to make a socket:
+   connection = new Socket(hostnameOrIP, portNum);
+   
+(ii) How to get streams from the socket:
+  
+  severIn = new BufferedReader( new InputStreamReader( connection.getInputStream()));
+  
+  severOut = new PrintStream(connection.getOutputStream());
+  
+(iii) How to write to a PrintStream:
+   
+   severOut.println("Kobe Bryant");
+   
+(iv)  How to read from a BufferedReader:
+   
+   String aLine = severIn.readLine(); //This should block until there is something to read.
+   
+
+Structure of your class:
+//many import statements
+public class  ChatClient  {
+   public class  ChatClient() {
+   //Initialize the GUI components and other data.
+   
+   }
+    
+   public void launchFrame()
+   {
+   //make the GUI
+   //eastablish the socket connection
+   //make a thread and start it with an instance of RemoteReader
+   //create the streams from the socket connection
+   //make gui visible
+   }
+   
+   public class SendListener implements ActionListener 
+   {
+       public void actionPerformed(ActionEvent e)
+       {
+          //get info from text field
+          //send it to the server
+          //clear the text field
+       }
+    }
+    
+    private class RemoteReader implements Runnable 
+    {
+       public void run()
+       {
+         while (true)
+         {
+           //do stuff here to continously read from the server using the input stream
+           //put the received text into the text area
+           
+         }
+         
+       }
+     }
+     
+     
