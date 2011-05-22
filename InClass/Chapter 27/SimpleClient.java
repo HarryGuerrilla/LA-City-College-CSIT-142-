@@ -6,7 +6,7 @@ public class SimpleClient {
     try {
       // Open your connection to a server, at port 5432
       // localhost used here
-      Socket s1 = new Socket("10.10.541", 5432);
+      Socket s1 = new Socket("127.0.0.1", 2000);
 
       // Get an input stream from the socket
       InputStream is = s1.getInputStream();
