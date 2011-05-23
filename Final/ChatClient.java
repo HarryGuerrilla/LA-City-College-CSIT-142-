@@ -1,4 +1,9 @@
-import java.awt.FlowLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.Box;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
@@ -49,7 +54,6 @@ public class ChatClient{
     
     ChatFrame window = new ChatFrame();
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    window.setSize(550,400);
     window.setVisible(true);
     // try {
     //   // Open your connection to a server, at port 5432
@@ -76,22 +80,61 @@ public class ChatClient{
   }
 }
 
-class ChatFrame extends JFrame{
+class ChatFrame extends JFrame implements ComponentListener {
   private JTextField messageField;
   private JTextArea  chatArea;
   private JButton    sendMessageButton;
   private JButton    quitButton;
+
+  static final int WIDTH = 700;
+  static final int HEIGHT = 400;
   
   public ChatFrame(){
     super("Chat Window");
-    setLayout(new FlowLayout());
-    
-    messageField = new JTextField(50);
-    add( messageField );
+    setLayout(new BorderLayout());
+    setSize(WIDTH,HEIGHT);
+    addComponentListener(this);
 
+    Box textFieldBox = Box.createVerticalBox();
+    Box buttonBox = Box.createVerticalBox();
+    
     chatArea = new JTextArea();
     chatArea.setColumns(50);
-    chatArea.setRows(10);
-    add( chatArea );
+    chatArea.setRows(100);
+    JScrollPane scrollPane = new JScrollPane(chatArea, 
+                                             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+                                             JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    textFieldBox.add(scrollPane);
+    
+    messageField = new JTextField(50);
+    textFieldBox.add( messageField );
+
+    sendMessageButton = new JButton("Send");
+    buttonBox.add(sendMessageButton);
+
+    quitButton = new JButton("Quit");
+    buttonBox.add(quitButton);
+
+    add(textFieldBox, BorderLayout.CENTER);
+    add(buttonBox, BorderLayout.EAST);
   }
+  
+  public void componentResized(ComponentEvent e){
+    int width = getWidth();
+    int height = getHeight();
+    boolean resize = false;
+    if (width<WIDTH) {
+      resize = true;
+      width = WIDTH;
+    }
+    if (height<HEIGHT) {
+      resize = true;
+      height = HEIGHT;
+    }
+    if (resize)
+      setSize(width,height);
+  }
+  public void componentMoved(ComponentEvent e){}
+  public void componentShown(ComponentEvent e){}
+  public void componentHidden(ComponentEvent e){}
 }
