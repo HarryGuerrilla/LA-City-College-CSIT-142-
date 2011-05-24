@@ -1,21 +1,21 @@
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.Box;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.Socket;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JScrollPane;
 
 public class ChatClient{
    public ChatClient() {
@@ -110,9 +110,23 @@ class ChatFrame extends JFrame implements ComponentListener {
     textFieldBox.add( messageField );
 
     sendMessageButton = new JButton("Send");
+    sendMessageButton.addActionListener(
+      new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+          //Send message
+        }
+      }
+    );
     buttonBox.add(sendMessageButton);
 
     quitButton = new JButton("Quit");
+    quitButton.addActionListener(
+      new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+          System.exit(0);
+        }
+      }
+    );
     buttonBox.add(quitButton);
 
     add(textFieldBox, BorderLayout.CENTER);
