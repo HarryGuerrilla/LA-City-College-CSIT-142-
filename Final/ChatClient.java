@@ -25,10 +25,13 @@ public class ChatClient{
 
    public void launchFrame(){
    //make the GUI
+    ChatFrame window = new ChatFrame();
+    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    //eastablish the socket connection
    //make a thread and start it with an instance of RemoteReader
    //create the streams from the socket connection
    //make gui visible
+    window.setVisible(true);
    }
    
    public class SendListener implements ActionListener{
@@ -51,10 +54,9 @@ public class ChatClient{
   }
 
   public static void main(String args[]) {
-    
-    ChatFrame window = new ChatFrame();
-    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    window.setVisible(true);
+    ChatClient chatWindow = new ChatClient();
+    chatWindow.launchFrame();
+
     // try {
     //   // Open your connection to a server, at port 5432
     //   // localhost used here
