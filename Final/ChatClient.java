@@ -17,31 +17,79 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ChatClient{
-   public ChatClient() {
-   //Initialize the GUI components and other data.
-   
-   }
+public class ChatClient extends JFrame implements ComponentListener{
+  private JTextField messageField;
+  private JTextArea  chatArea;
+  private JButton    sendMessageButton;
+  private JButton    quitButton;
+  static final int WIDTH = 700;
+  static final int HEIGHT = 400;
 
-   public void launchFrame(){
-   //make the GUI
-    ChatFrame window = new ChatFrame();
+  public ChatClient() {
+    //Initialize the GUI components and other data.
+    super("Chat Window");
+    setLayout(new BorderLayout());
+    setSize(WIDTH,HEIGHT);
+    addComponentListener(this);
+
+    Box textFieldBox = Box.createVerticalBox();
+    Box buttonBox = Box.createVerticalBox();
+    
+    chatArea = new JTextArea();
+    chatArea.setColumns(50);
+    chatArea.setRows(100);
+    JScrollPane scrollPane = new JScrollPane(chatArea, 
+                                             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+                                             JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+    textFieldBox.add(scrollPane);
+    
+    messageField = new JTextField(50);
+    textFieldBox.add( messageField );
+
+    sendMessageButton = new JButton("Send");
+    sendMessageButton.addActionListener(
+      new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+          //Send message
+          messageField.setText("");
+        }
+      }
+    );
+    buttonBox.add(sendMessageButton);
+
+    quitButton = new JButton("Quit");
+    quitButton.addActionListener(
+      new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+          System.exit(0);
+        }
+      }
+    );
+    buttonBox.add(quitButton);
+
+    add(textFieldBox, BorderLayout.CENTER);
+    add(buttonBox, BorderLayout.EAST);   
+  }
+
+  public void launchFrame(){
+    //make the GUI
+    ChatClient window = new ChatClient();
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   //eastablish the socket connection
-   //make a thread and start it with an instance of RemoteReader
-   //create the streams from the socket connection
-   //make gui visible
+    //eastablish the socket connection
+    //make a thread and start it with an instance of RemoteReader
+    //create the streams from the socket connection
+    //make gui visible
     window.setVisible(true);
-   }
+  }
    
-   public class SendListener implements ActionListener{
-       public void actionPerformed(ActionEvent e)
-       {
-          //get info from text field
-          //send it to the server
-          //clear the text field
-       }
-   }
+  public class SendListener implements ActionListener{
+    public void actionPerformed(ActionEvent e)
+    {
+      //get info from text field
+      //send it to the server
+      //clear the text field
+    }
+  }
     
   private class RemoteReader implements Runnable{
     public void run(){
@@ -52,6 +100,25 @@ public class ChatClient{
       }
     }
   }
+
+  public void componentResized(ComponentEvent e){
+    int width = getWidth();
+    int height = getHeight();
+    boolean resize = false;
+    if (width<WIDTH) {
+      resize = true;
+      width = WIDTH;
+    }
+    if (height<HEIGHT) {
+      resize = true;
+      height = HEIGHT;
+    }
+    if (resize)
+      setSize(width,height);
+  }
+  public void componentMoved(ComponentEvent e){}
+  public void componentShown(ComponentEvent e){}
+  public void componentHidden(ComponentEvent e){}
 
   public static void main(String args[]) {
     ChatClient chatWindow = new ChatClient();
@@ -80,77 +147,4 @@ public class ChatClient{
     //   // ignore
     // }
   }
-}
-
-class ChatFrame extends JFrame implements ComponentListener {
-  private JTextField messageField;
-  private JTextArea  chatArea;
-  private JButton    sendMessageButton;
-  private JButton    quitButton;
-
-  static final int WIDTH = 700;
-  static final int HEIGHT = 400;
-  
-  public ChatFrame(){
-    super("Chat Window");
-    setLayout(new BorderLayout());
-    setSize(WIDTH,HEIGHT);
-    addComponentListener(this);
-
-    Box textFieldBox = Box.createVerticalBox();
-    Box buttonBox = Box.createVerticalBox();
-    
-    chatArea = new JTextArea();
-    chatArea.setColumns(50);
-    chatArea.setRows(100);
-    JScrollPane scrollPane = new JScrollPane(chatArea, 
-                                             JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
-                                             JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-    textFieldBox.add(scrollPane);
-    
-    messageField = new JTextField(50);
-    textFieldBox.add( messageField );
-
-    sendMessageButton = new JButton("Send");
-    sendMessageButton.addActionListener(
-      new ActionListener(){
-        public void actionPerformed(ActionEvent e){
-          //Send message
-        }
-      }
-    );
-    buttonBox.add(sendMessageButton);
-
-    quitButton = new JButton("Quit");
-    quitButton.addActionListener(
-      new ActionListener(){
-        public void actionPerformed(ActionEvent e){
-          System.exit(0);
-        }
-      }
-    );
-    buttonBox.add(quitButton);
-
-    add(textFieldBox, BorderLayout.CENTER);
-    add(buttonBox, BorderLayout.EAST);
-  }
-  
-  public void componentResized(ComponentEvent e){
-    int width = getWidth();
-    int height = getHeight();
-    boolean resize = false;
-    if (width<WIDTH) {
-      resize = true;
-      width = WIDTH;
-    }
-    if (height<HEIGHT) {
-      resize = true;
-      height = HEIGHT;
-    }
-    if (resize)
-      setSize(width,height);
-  }
-  public void componentMoved(ComponentEvent e){}
-  public void componentShown(ComponentEvent e){}
-  public void componentHidden(ComponentEvent e){}
 }
