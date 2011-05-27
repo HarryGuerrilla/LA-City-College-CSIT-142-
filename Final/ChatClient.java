@@ -18,15 +18,20 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class ChatClient extends JFrame implements ComponentListener{
-  private JTextField messageField;
-  private JTextArea  chatArea;
-  private JButton    sendMessageButton;
+  private JTextField messageField; // field where user types message
+  private JTextArea  chatArea; // textarea where all messages are printed
+  private JButton    sendMessageButton; 
   private JButton    quitButton;
+  
+  // Default width and height
+  // if the user decreases the size of the window, it will resize to the 
+  // default.
   static final int WIDTH = 700;
   static final int HEIGHT = 400;
 
   public ChatClient() {
     //Initialize the GUI components and other data.
+  
     super("Chat Window");
     setLayout(new BorderLayout());
     setSize(WIDTH,HEIGHT);
@@ -101,6 +106,7 @@ public class ChatClient extends JFrame implements ComponentListener{
     }
   }
 
+  // Resize window to minimum size
   public void componentResized(ComponentEvent e){
     int width = getWidth();
     int height = getHeight();
