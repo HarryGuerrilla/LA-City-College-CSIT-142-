@@ -57,8 +57,6 @@ public class ChatClient extends JFrame implements ComponentListener{
     setSize(WIDTH,HEIGHT);
     addComponentListener(this);
 
-
-
     // menu
     // ==================================================
     // File menu includes settings for both port and host
@@ -108,9 +106,14 @@ public class ChatClient extends JFrame implements ComponentListener{
     setJMenuBar(bar);
     bar.add(fileMenu);
 
+
+    // The UI consists of two main areas, one that will house the chat area, and 
+    // message input, and another to house the buttons.  Create two boxes to 
+    // represent the two sections.
     Box textFieldBox = Box.createVerticalBox();
     Box buttonBox = Box.createVerticalBox();
     
+    // create chat area
     chatArea = new JTextArea();
     chatArea.setColumns(50);
     chatArea.setRows(100);
@@ -120,13 +123,16 @@ public class ChatClient extends JFrame implements ComponentListener{
                                              JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
     textFieldBox.add(scrollPane);
     
+    // create text input area
     messageField = new JTextField(50);
     textFieldBox.add( messageField );
-
+    
+    // send message button
     sendMessageButton = new JButton("Send");
     sendMessageButton.addActionListener(new SendListener());
     buttonBox.add(sendMessageButton);
 
+    // quit button
     quitButton = new JButton("Quit");
     quitButton.addActionListener(
       new ActionListener(){
@@ -150,7 +156,12 @@ public class ChatClient extends JFrame implements ComponentListener{
     add(buttonBox, BorderLayout.EAST);   
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setVisible(true);
+    //    setVisible(true);
+  }
+
+  public void launchFrame(){
+    ChatClient.this.setVisible(true);
+    ChatClient.this.connect();
   }
 
   public void connect(){
@@ -233,6 +244,6 @@ public class ChatClient extends JFrame implements ComponentListener{
 
   public static void main(String args[]) {
     ChatClient chatWindow = new ChatClient();
-    chatWindow.connect();
+    chatWindow.launchFrame();
   }
 }
