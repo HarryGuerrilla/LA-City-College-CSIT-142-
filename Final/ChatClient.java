@@ -1,3 +1,5 @@
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,6 +52,7 @@ public class ChatClient extends JFrame implements ComponentListener{
     chatArea = new JTextArea();
     chatArea.setColumns(50);
     chatArea.setRows(100);
+    chatArea.setEditable(false);
     JScrollPane scrollPane = new JScrollPane(chatArea, 
                                              JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
                                              JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -100,6 +103,9 @@ public class ChatClient extends JFrame implements ComponentListener{
 
       input = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
+      ExecutorService threadExecutor = Executors.newCachedThreadPool();
+      threadExecutor.execute(new RemoteReader());
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -110,9 +116,9 @@ public class ChatClient extends JFrame implements ComponentListener{
     {
       //get info from text field
       //send it to the server
-      String msg = messageField.getText() + "\n";
+      String msg = "\n" + messageField.getText();
       output.println(msg);
-      chatArea.append(msg);
+      //      chatArea.append(msg);
       output.flush();
 
       //clear the text field
@@ -123,9 +129,15 @@ public class ChatClient extends JFrame implements ComponentListener{
   private class RemoteReader implements Runnable{
     public void run(){
       while (true) {
-          //do stuff here to continously read from the server using the input stream
+        //do stuff here to continously read from the server using the input stream
+        try {
+          String msg = input.readLine();
           //put the received text into the text area
-           
+          chatArea.append(msg);
+          chatArea.append(System.getProperty("line.separator"));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     }
   }
