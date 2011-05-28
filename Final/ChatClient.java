@@ -20,27 +20,30 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 
 public class ChatClient extends JFrame implements ComponentListener{
-  private JTextField     messageField; // field where user types message
-  private JTextArea      chatArea; // textarea where all messages are printed
-  private JButton        sendMessageButton; 
-  private JButton        quitButton;
-  private Socket         client;
-  private PrintStream    output;
-  private BufferedReader input;
-  private String         host = "127.0.0.1";
-  private int            port = 2000;
+  private JTextField      messageField; // field where user types message
+  private JTextArea       chatArea; // textarea where all messages are printed
+  private JButton         sendMessageButton; 
+  private JButton         quitButton;
+  private Socket          client;
+  private PrintStream     output;
+  private BufferedReader  input;
+  private String          host = "127.0.0.1";
+  private int             port = 2000;
+  private ExecutorService ex;            
+  private boolean         stopReading = false;
   
   // Default width and height
+  // ========================
   // if the user decreases the size of the window, it will resize to the 
   // default.
   static final int WIDTH = 700;
