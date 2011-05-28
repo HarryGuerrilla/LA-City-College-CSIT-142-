@@ -82,7 +82,7 @@ public class ChatClient extends JFrame implements ComponentListener{
                     ChatClient.this.connect();
                 }
                 catch (IOException d) {
-                    //   d.printStackTrace();
+                    d.printStackTrace();
                 }
             }
     });
@@ -99,7 +99,7 @@ public class ChatClient extends JFrame implements ComponentListener{
                     ChatClient.this.connect();
                 }
                 catch (IOException d) {
-                    //   d.printStackTrace();
+                    d.printStackTrace();
                 }
             }
     });
@@ -138,6 +138,8 @@ public class ChatClient extends JFrame implements ComponentListener{
             System.exit(0);
           } catch (IOException ioException) {
             ioException.printStackTrace();
+          } finally {
+            ex.shutdown();
           }
         }
       }
@@ -166,10 +168,12 @@ public class ChatClient extends JFrame implements ComponentListener{
 
       input = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-      ExecutorService threadExecutor = Executors.newCachedThreadPool();
-      threadExecutor.execute(new RemoteReader());
-
       messageField.addActionListener(new SendListener());
+      messageField.requestFocus();
+
+      ExecutorService ex = Executors.newCachedThreadPool();
+      ex.execute(new RemoteReader());
+      ex.shutdown();
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -193,7 +197,7 @@ public class ChatClient extends JFrame implements ComponentListener{
     
   private class RemoteReader implements Runnable{
     public void run(){
-      while (true) {
+      while (!stopReading) {
         //do stuff here to continously read from the server using the input stream
         try {
           String msg = input.readLine();
