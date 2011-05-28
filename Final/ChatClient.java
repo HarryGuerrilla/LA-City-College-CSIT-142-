@@ -1,10 +1,10 @@
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -14,6 +14,8 @@ import java.io.PrintStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +24,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 
 public class ChatClient extends JFrame implements ComponentListener{
   private JTextField     messageField; // field where user types message
@@ -31,6 +37,8 @@ public class ChatClient extends JFrame implements ComponentListener{
   private Socket         client;
   private PrintStream    output;
   private BufferedReader input;
+  private String         host = "127.0.0.1";
+  private int            port = 2000;
   
   // Default width and height
   // if the user decreases the size of the window, it will resize to the 
@@ -39,12 +47,63 @@ public class ChatClient extends JFrame implements ComponentListener{
   static final int HEIGHT = 400;
 
   public ChatClient() {
+
     //Initialize the GUI components and other data.
-  
     super("Chat Window");
     setLayout(new BorderLayout());
     setSize(WIDTH,HEIGHT);
     addComponentListener(this);
+
+
+
+    // menu
+    // ==================================================
+    // File menu includes settings for both port and host
+
+    JMenu fileMenu = new JMenu("File");
+    fileMenu.setMnemonic('F');
+    
+    JMenuItem settings = new JMenu("Settings");
+    settings.setMnemonic('S');
+    fileMenu.add(settings);
+
+    JMenuItem host = new JMenuItem("Host");
+    settings.add(host);
+    host.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                ChatClient.this.host = JOptionPane.showInputDialog(ChatClient.this, "Host", "127.0.0.1");
+                try {
+                    ChatClient.this.client.close();
+                    ChatClient.this.input.close();
+                    ChatClient.this.output.close();
+                    ChatClient.this.connect();
+                }
+                catch (IOException d) {
+                    //   d.printStackTrace();
+                }
+            }
+    });
+
+    JMenuItem port = new JMenuItem("Port");
+    settings.add(port);
+    port.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                ChatClient.this.port = Integer.parseInt(JOptionPane.showInputDialog(ChatClient.this, "Port", "2000"));
+                try {
+                    ChatClient.this.client.close();
+                    ChatClient.this.input.close();
+                    ChatClient.this.output.close();
+                    ChatClient.this.connect();
+                }
+                catch (IOException d) {
+                    //   d.printStackTrace();
+                }
+            }
+    });
+    
+    JMenuBar bar = new JMenuBar();
+    setJMenuBar(bar);
+    bar.add(fileMenu);
 
     Box textFieldBox = Box.createVerticalBox();
     Box buttonBox = Box.createVerticalBox();
@@ -71,6 +130,7 @@ public class ChatClient extends JFrame implements ComponentListener{
         public void actionPerformed(ActionEvent e){
           try {
             output.close();
+            input.close();
             client.close();
             System.exit(0);
           } catch (IOException ioException) {
@@ -91,7 +151,7 @@ public class ChatClient extends JFrame implements ComponentListener{
   public void connect(){
     //eastablish the socket connection
     try {
-      client = new Socket("127.0.0.1", 2000);
+      client = new Socket(host, port);
       if (client == null) {
         throw new IOException();
       }
@@ -105,6 +165,8 @@ public class ChatClient extends JFrame implements ComponentListener{
 
       ExecutorService threadExecutor = Executors.newCachedThreadPool();
       threadExecutor.execute(new RemoteReader());
+
+      messageField.addActionListener(new SendListener());
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -165,28 +227,5 @@ public class ChatClient extends JFrame implements ComponentListener{
   public static void main(String args[]) {
     ChatClient chatWindow = new ChatClient();
     chatWindow.connect();
-
-    // try {
-    //   // Open your connection to a server, at port 5432
-    //   // localhost used here
-    //   Socket s1 = new Socket("127.0.0.1", 2000);
-
-    //   // Get an input stream from the socket
-    //   InputStream is = s1.getInputStream();
-    //   // Decorate it with a "data" input stream
-    //   DataInputStream dis = new DataInputStream(is);
-
-    //   // Read the input and print it to the screen
-    //   System.out.println(dis.readUTF());
-    //   System.out.println(dis.readChar());
-
-    //   // When done, just close the steam and connection
-    //   dis.close();
-    //   s1.close();
-    // } catch (ConnectException connExc) {
-    //   System.err.println("Could not connect to the server.");
-    // } catch (IOException e) {
-    //   // ignore
-    // }
   }
 }
