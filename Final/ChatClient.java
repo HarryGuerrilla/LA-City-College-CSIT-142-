@@ -73,14 +73,20 @@ public class ChatClient extends JFrame implements ComponentListener{
     host.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 ChatClient.this.host = JOptionPane.showInputDialog(ChatClient.this, "Host", "127.0.0.1");
+                ChatClient.this.stopReading = true;
                 try {
-                    ChatClient.this.client.close();
-                    ChatClient.this.input.close();
-                    ChatClient.this.output.close();
-                    ChatClient.this.connect();
+                  System.out.println("Connecting to new host");
+                  ChatClient.this.input.close();
+                  System.out.println("closed input stream");
+                  ChatClient.this.output.close();
+                  System.out.println("closed output stream");
+                  ChatClient.this.client.close();
+                  System.out.println("closed socket");
+                  System.out.println("connection....");
+                  ChatClient.this.connect();                  
                 }
                 catch (IOException d) {
-                    d.printStackTrace();
+                  d.printStackTrace();
                 }
             }
     });
@@ -91,13 +97,18 @@ public class ChatClient extends JFrame implements ComponentListener{
             public void actionPerformed(ActionEvent e){
                 ChatClient.this.port = Integer.parseInt(JOptionPane.showInputDialog(ChatClient.this, "Port", "2000"));
                 try {
-                    ChatClient.this.client.close();
-                    ChatClient.this.input.close();
-                    ChatClient.this.output.close();
-                    ChatClient.this.connect();
+                  System.out.println("Connecting to new host");                  
+                  ChatClient.this.input.close();
+                  System.out.println("closed input stream");
+                  ChatClient.this.output.close();
+                  System.out.println("closed output stream");
+                  ChatClient.this.client.close();
+                  System.out.println("closed socket");
+                  System.out.println("connection....");
+                  ChatClient.this.connect();
                 }
                 catch (IOException d) {
-                    d.printStackTrace();
+                  d.printStackTrace();
                 }
             }
     });
@@ -172,19 +183,16 @@ public class ChatClient extends JFrame implements ComponentListener{
         throw new IOException();
       }
 
-      //make a thread and start it with an instance of RemoteReader
-
       //create the streams from the socket connection
       output = new PrintStream(client.getOutputStream());
-
       input = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
       messageField.addActionListener(new SendListener());
       messageField.requestFocus();
 
+      //make a thread and start it with an instance of RemoteReader
       ExecutorService ex = Executors.newCachedThreadPool();
       ex.execute(new RemoteReader());
-      ex.shutdown();
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -208,6 +216,7 @@ public class ChatClient extends JFrame implements ComponentListener{
     
   private class RemoteReader implements Runnable{
     public void run(){
+      stopReading = false;
       while (!stopReading) {
         //do stuff here to continously read from the server using the input stream
         try {
@@ -222,7 +231,7 @@ public class ChatClient extends JFrame implements ComponentListener{
     }
   }
 
-  // Resize window to minimum size
+  // resize window to minimum size
   public void componentResized(ComponentEvent e){
     int width = getWidth();
     int height = getHeight();
