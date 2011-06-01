@@ -28,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import java.awt.Color;
 
 public class ChatClient extends JFrame implements ComponentListener{
   private JTextField      messageField; // field where user types message
@@ -63,6 +64,7 @@ public class ChatClient extends JFrame implements ComponentListener{
 
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic('F');
+    fileMenu.setBackground(Color.GRAY);
     
     JMenuItem settings = new JMenu("Settings");
     settings.setMnemonic('S');
@@ -114,6 +116,7 @@ public class ChatClient extends JFrame implements ComponentListener{
     });
     
     JMenuBar bar = new JMenuBar();
+    bar.setBackground(Color.GRAY);
     setJMenuBar(bar);
     bar.add(fileMenu);
 
